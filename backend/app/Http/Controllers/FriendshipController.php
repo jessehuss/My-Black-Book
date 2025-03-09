@@ -61,6 +61,30 @@ class FriendshipController extends Controller {
     }
 
     public function pendingRequests() {
-        return response()->json(Friendship::where('friend_id', auth()->id())->where('status', 'pending')->with('user')->get());
+        $incomingRequests = Friendship::where('friend_id', auth()->id())
+            ->where('status', 'pending')
+            ->with('user')
+            ->get()
+            ->map(function ($request) {
+                return [
+                    'id' => $request->id,
+                    'user' => $request->user,
+                    'type' => 'incoming'
+                ];
+            });
+
+        $outgoingRequests = Friendship::where('user_id', auth()->id())
+            ->where('status', 'pending')
+            ->with('friend')
+            ->get()
+            ->map(function ($request) {
+                return [
+                    'id' => $request->id,
+                    'user' => $request->friend,
+                    'type' => 'outgoing'
+                ];
+            });
+
+        return response()->json($incomingRequests->concat($outgoingRequests));
     }
 }

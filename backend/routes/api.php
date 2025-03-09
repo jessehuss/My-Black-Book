@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FriendshipController;
 use App\Http\Controllers\BetController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,4 +37,5 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{bet}', [BetController::class, 'update']);
         Route::delete('/{bet}', [BetController::class, 'destroy']);
     });
+    Route::get('/users/search', [UserController::class, 'search']);
 });
