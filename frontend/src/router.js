@@ -5,6 +5,8 @@ import Register from "./views/Register.vue";
 import Home from "./views/Home.vue";
 import Profile from "./views/Profile.vue";
 import Friends from "./views/Friends.vue";
+import BetsPage from "./views/BetsPage.vue";
+import BetDetailPage from "./views/BetDetailPage.vue";
 
 const routes = [
   { 
@@ -20,6 +22,17 @@ const routes = [
   { 
     path: "/", 
     component: Home,
+    meta: { requiresAuth: true }
+  },
+  { 
+    path: "/bets", 
+    component: BetsPage,
+    meta: { requiresAuth: true }
+  },
+  { 
+    path: "/bets/:id", 
+    component: BetDetailPage,
+    name: "bet-detail",
     meta: { requiresAuth: true }
   },
   { 

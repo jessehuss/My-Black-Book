@@ -2,6 +2,7 @@
 import { ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useAuthStore } from "./stores/auth";
+import SimpleToast from './components/SimpleToast.vue';
 import './assets/main.css'
 
 const router = useRouter();
@@ -40,6 +41,13 @@ const handleLogout = async () => {
                 :class="[$route.path === '/' ? 'border-blue-500' : 'border-transparent hover:border-gray-300']"
               >
                 Home
+              </router-link>
+              <router-link 
+                to="/bets" 
+                class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 border-b-2" 
+                :class="[$route.path.startsWith('/bets') ? 'border-blue-500' : 'border-transparent hover:border-gray-300']"
+              >
+                Bets
               </router-link>
               <router-link 
                 to="/profile" 
@@ -95,6 +103,13 @@ const handleLogout = async () => {
             Home
           </router-link>
           <router-link 
+            to="/bets" 
+            class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50"
+            :class="[$route.path.startsWith('/bets') ? 'border-l-4 border-blue-500 bg-blue-50' : '']"
+          >
+            Bets
+          </router-link>
+          <router-link 
             to="/profile" 
             class="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50"
             :class="[$route.path === '/profile' ? 'border-l-4 border-blue-500 bg-blue-50' : '']"
@@ -121,6 +136,9 @@ const handleLogout = async () => {
     <main :class="{ 'pt-16': isAuthenticated }">
       <router-view></router-view>
     </main>
+    
+    <!-- Add the toast component -->
+    <SimpleToast />
   </div>
 </template>
 
