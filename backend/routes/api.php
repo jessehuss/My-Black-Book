@@ -30,12 +30,5 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/accept/{id}', [FriendshipController::class, 'acceptRequest']);
         Route::delete('/remove/{id}', [FriendshipController::class, 'removeFriend']);
     });
-    Route::prefix('bets')->group(function () {
-        Route::post('/', [BetController::class, 'store']);
-        Route::get('/', [BetController::class, 'index']);
-        Route::get('/{bet}', [BetController::class, 'show']);
-        Route::put('/{bet}', [BetController::class, 'update']);
-        Route::delete('/{bet}', [BetController::class, 'destroy']);
-    });
     Route::get('/users/search', [UserController::class, 'search']);
 });

@@ -43,25 +43,4 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    public function bets(): HasMany
-    {
-        return $this->hasMany(Bet::class);
-    }
-
-    public function participatedBets()
-    {
-        return $this->belongsToMany(Bet::class, 'bet_participants')
-            ->withTimestamps();
-    }
-
-    public function allBets()
-    {
-        return Bet::where(function ($query) {
-            $query->where('user_id', $this->id)
-                  ->orWhereHas('participants', function ($query) {
-                      $query->where('users.id', $this->id);
-                  });
-        });
-    }
 }

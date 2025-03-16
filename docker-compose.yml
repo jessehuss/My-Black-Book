@@ -16,13 +16,17 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/var/www/html
+      - ./backend/coverage:/var/www/html/coverage
     environment:
       DB_HOST: mysql
       DB_DATABASE: bettracker
       DB_USERNAME: root
       DB_PASSWORD: root
+      XDEBUG_MODE: coverage
     depends_on:
       - mysql
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   frontend:
     build: ./frontend
