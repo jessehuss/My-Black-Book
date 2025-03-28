@@ -5,80 +5,29 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Bet extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'title',
-        'description',
-        'stake_amount',
-        'status',
-        'created_by',
-        'settled_at',
-    ];
+    protected $fillable = ['title', 'description', 'wager', 'status'];
 
-    protected $casts = [
-        'stake_amount' => 'decimal:2',
-        'settled_at' => 'datetime',
-    ];
-
-    /**
-     * Get the user who created the bet.
-     */
-    public function creator(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get the participants of the bet.
-     */
-    public function participants(): HasMany
+    public function participants(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'bet_participants')
+            ->withTimestamps();
+    }
+
+    public function betParticipants(): HasMany
     {
         return $this->hasMany(BetParticipant::class);
-    }
-
-    /**
-     * Get the conditions of the bet.
-     */
-    public function conditions(): HasMany
-    {
-        return $this->hasMany(BetCondition::class);
-    }
-
-    /**
-     * Get the outcome of the bet.
-     */
-    public function outcome(): HasOne
-    {
-        return $this->hasOne(BetOutcome::class);
-    }
-
-    /**
-     * Scope a query to only include active bets.
-     */
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
-    }
-
-    /**
-     * Scope a query to only include pending bets.
-     */
-    public function scopePending($query)
-    {
-        return $query->where('status', 'pending');
-    }
-
-    /**
-     * Scope a query to only include settled bets.
-     */
-    public function scopeSettled($query)
-    {
-        return $query->whereIn('status', ['won', 'lost', 'canceled']);
     }
 }

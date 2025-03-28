@@ -14,15 +14,9 @@ return new class extends Migration
         Schema::create('bet_participants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('bet_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained();
-            $table->enum('role', ['creator', 'challenger'])->default('challenger');
-            $table->enum('side', ['for', 'against'])->nullable();
-            $table->boolean('has_accepted')->default(false);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
-            
-            // Ensure a user can only participate once in a given bet
-            $table->unique(['bet_id', 'user_id']);
         });
     }
 
@@ -33,4 +27,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('bet_participants');
     }
-}; 
+};
