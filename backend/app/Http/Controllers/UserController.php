@@ -11,6 +11,11 @@ class UserController extends Controller
     {
         $query = $request->get('q');
         
+        // Ensure we have a search query
+        if (empty($query)) {
+            return response()->json([]);
+        }
+        
         $users = User::where('id', '!=', auth()->id())
             ->where(function($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
@@ -21,4 +26,4 @@ class UserController extends Controller
 
         return response()->json($users);
     }
-} 
+}

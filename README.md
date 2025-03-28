@@ -82,17 +82,17 @@ docker exec -it backend-app php artisan migrate --seed
 
 ## Testing
 
-Run the backend tests:
+Run the backend tests with coverage:
 
 ```sh
-docker exec -it backend-app php artisan test
+docker-compose exec backend composer test:coverage
 ```
 
-Run frontend tests:
+Run frontend tests with coverage:
 
 ```sh
 cd frontend
-npm run test
+npm run test:coverage
 ```
 
 ## API Documentation
